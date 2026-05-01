@@ -1,0 +1,4 @@
+project_id = "YOUR-PROJECT-REF"
+
+[functions.send-launch-emails]
+verify_jwt = false
