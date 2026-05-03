@@ -7,13 +7,15 @@ export default function Error({
   reset: () => void
 }) {
   return (
-    <main className="min-h-screen flex items-center justify-center p-6">
-      <div className="text-center">
-        <h2 className="font-poppins text-3xl font-bold text-brand-black mb-2">Something went wrong</h2>
-        <button
-          onClick={() => reset()}
-          className="bg-yellow-brand text-brand-black font-poppins font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-yellow-dark transition-all"
-        >
+    <main className="min-h-screen flex items-center justify-center p-6 bg-white text-navy">
+      <div className="text-center max-w-md">
+        <h2 className="font-black text-3xl text-navy mb-3 tracking-tight">
+          Something went wrong.
+        </h2>
+        <p className="text-muted text-[15px] mb-6">
+          Slow down. Try again — and if it still fails, refresh the page.
+        </p>
+        <button onClick={() => reset()} className="btn-primary text-sm">
           Try again
         </button>
       </div>
