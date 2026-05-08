@@ -108,7 +108,7 @@ export default function WaitlistForm({ onSuccess }: Props) {
         <div className="relative w-20 h-20 mx-auto mb-6">
           <span className="burst absolute inset-0 rounded-full" />
           <div className="relative w-20 h-20 rounded-full bg-amber/15 flex items-center justify-center">
-            <CheckCircle2 style={{ width: 38, height: 38, color: '#D4A017' }} />
+            <CheckCircle2 style={{ width: 38, height: 38, color: '#CA8A04' }} />
           </div>
         </div>
         <h3 className="font-black text-2xl md:text-[28px] text-navy mb-3 tracking-tight">
@@ -134,7 +134,7 @@ export default function WaitlistForm({ onSuccess }: Props) {
     return (
       <div className="text-center py-10 animate-fade-in">
         <div className="w-20 h-20 rounded-full bg-amber/15 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 style={{ width: 38, height: 38, color: '#D4A017' }} />
+          <CheckCircle2 style={{ width: 38, height: 38, color: '#CA8A04' }} />
         </div>
         <h3 className="font-black text-2xl text-navy mb-3 tracking-tight">
           You&apos;re already on the list.

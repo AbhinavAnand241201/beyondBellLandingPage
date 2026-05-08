@@ -7,8 +7,7 @@ import {
   ClipboardList,
   MessageCircle,
   Calendar,
-  Shield,
-  FileCheck,
+  CalendarClock,
   Lock,
   Check,
   Sparkles,
@@ -28,39 +27,32 @@ const TOOLS: Tool[] = [
   {
     icon: BookOpen,
     name: 'Lesson Planner',
-    access: 'Free: 1 trial · Paid: Unlimited',
-    desc: 'Generates a complete CBSE / ICSE / IGCSE lesson plan in 60 seconds. Board-aligned. Select grade, subject, topic — done.',
+    access: 'Free trial · Unlimited on paid',
+    desc: 'A complete CBSE / ICSE / IGCSE lesson plan in 60 seconds.',
   },
   {
     icon: ClipboardList,
     name: 'Question Paper Maker',
-    access: 'Free: 1 trial · Paid: Unlimited',
-    desc: 'Full question paper with answer key in 15 minutes. Marks allocated. Sections structured. MCQ, short answer, long answer — board-pattern aligned.',
+    access: 'Free trial · Unlimited on paid',
+    desc: 'Board-aligned paper with answer key in 15 minutes.',
   },
   {
     icon: MessageCircle,
     name: 'Parent Message Writer',
-    access: 'Free: 1 trial · Paid: Unlimited',
-    desc: '20+ situation types. The parent message you have been putting off takes 3 minutes. Tone calibrated for WhatsApp, email, or formal letter.',
+    access: 'Free trial · Unlimited on paid',
+    desc: '20+ situation types. Tone-calibrated. Done in 3 minutes.',
   },
   {
     icon: Calendar,
     name: 'Event Planner',
-    access: 'Free: 1 trial · Standard+: Unlimited',
-    desc: 'Annual day, PTM, orientation, sports day — 25 event types. Complete planning pack: timeline, task matrix, communication templates, day-of checklist.',
+    access: 'Free trial · Standard+',
+    desc: 'Annual day, PTM, sports day — full pack: timeline, tasks, templates.',
   },
   {
-    icon: Shield,
-    name: 'Policy Advisor',
-    access: 'Free: 1 trial · Pro only: Unlimited',
-    desc: 'Ask any question about NEP 2020, CBSE byelaws, POCSO, RTE, or SQAA. Get a cited answer in plain language. No more navigating 200-page circulars alone.',
-    proOnly: true,
-  },
-  {
-    icon: FileCheck,
-    name: 'SQAA Generator',
-    access: 'Free: 1 trial · Pro only: Unlimited',
-    desc: 'Input your school data for any CBSE SQAA domain. Get a structured evidence document, self-evaluation scores, and improvement checklist.',
+    icon: CalendarClock,
+    name: 'Time Table Maker',
+    access: 'Free trial · Pro only',
+    desc: 'Generate clash-free school timetables in minutes. Drag-and-drop edits.',
     proOnly: true,
   },
 ]
@@ -80,14 +72,14 @@ const TIERS: Tier[] = [
     name: 'Free',
     price: '₹0',
     period: '/ month',
-    what: 'Full community · Morning Briefing · 19 Groups · Resource library · 1 trial use of every AI tool',
+    what: 'Community · Morning Briefing · 1 trial use of every AI tool',
   },
   {
     name: 'Founding Member',
     price: '₹199',
     period: '/ month',
     note: 'Locked for life · First 500 only',
-    what: 'Everything in Standard · Unlimited standard AI tools · Founding Member badge · Price never increases',
+    what: 'Everything in Standard · Founding badge · Price never increases',
     highlight: true,
     badge: 'Most Popular · First 500 Only',
   },
@@ -95,29 +87,26 @@ const TIERS: Tier[] = [
     name: 'Standard',
     price: '₹299',
     period: '/ month',
-    what: 'Unlimited Lesson Planner, Question Paper Maker, Parent Message Writer, Event Planner · Live events · Direct messages',
+    what: 'Unlimited standard AI tools · Live events · Direct messages',
   },
   {
     name: 'Pro',
     price: '₹399',
     period: '/ month',
-    what: 'Everything in Standard · Policy Advisor · SQAA Generator · Leadership Lounge (principals only)',
+    what: 'Standard + Time Table Maker + Leadership Lounge',
   },
   {
     name: 'School Plan',
     price: '₹1,999',
     period: '/ teacher / year',
-    note: 'Minimum 5 seats',
-    what: 'Standard for all teachers · Admin dashboard · Usage analytics · Bulk onboarding · GST invoice',
+    note: 'Min 5 seats',
+    what: 'Standard for all teachers · Admin dashboard · GST invoice',
   },
 ]
 
 const FM_TOTAL = 500
 const BOARDS_LOOP = ['CBSE', 'ICSE', 'IGCSE', 'NEP-aligned', 'Real classrooms', 'Real peers']
 
-// Renders typed text as <ink-word><ink-char/></ink-word> chunks so each
-// new character animates in (ink-bloom) without re-animating earlier ones.
-// Splitting by space first keeps line-break points at natural word boundaries.
 function renderInkChars(text: string) {
   const words = text.split(' ')
   return words.map((word, wi) => {
@@ -137,9 +126,6 @@ function renderInkChars(text: string) {
   })
 }
 
-// Three-stage typewriter for the hero headline. Stages exist so we can
-// nest the second-line tail inside .underline-amber — the underline
-// gradient grows naturally as that span widens, char by char.
 function HeadlineTypewriter() {
   const L1 = 'Finally. A professional home'
   const L2A = 'built for '
@@ -234,6 +220,96 @@ function HeadlineTypewriter() {
   )
 }
 
+/* ─────────────────────────────────────────────
+   Full-screen SVG loader — shows on every load/reload.
+   Self-removes after ~2.6s with an upward exit transition.
+   ───────────────────────────────────────────── */
+function PageLoader() {
+  const [mounted, setMounted] = useState(false)
+  const [exit, setExit] = useState(false)
+  const [gone, setGone] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setGone(true)
+      return
+    }
+    const t1 = window.setTimeout(() => setExit(true), 2400)
+    const t2 = window.setTimeout(() => setGone(true), 3200)
+    return () => {
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+    }
+  }, [])
+
+  if (!mounted || gone) return null
+
+  return (
+    <div id="bb-loader" className={exit ? 'exit' : ''} aria-hidden>
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div key={i} className="bb-particle" />
+      ))}
+
+      <div id="bb-loader-ring">
+        <svg viewBox="0 0 160 160" width="160" height="160" xmlns="http://www.w3.org/2000/svg">
+          <circle
+            className="bb-ring-outer"
+            cx="80" cy="80" r="70"
+            fill="none"
+            stroke="#FACC15"
+            strokeWidth="2"
+            strokeLinecap="round"
+            transform="rotate(-90 80 80)"
+          />
+          <circle
+            className="bb-ring-inner"
+            cx="80" cy="80" r="48"
+            fill="none"
+            stroke="rgba(250,204,21,0.4)"
+            strokeWidth="1.2"
+            strokeDasharray="8 6"
+            transform="rotate(-90 80 80)"
+          />
+          <circle
+            className="bb-ring-spin"
+            cx="80" cy="80" r="70"
+            fill="none"
+            stroke="#FDE047"
+            strokeWidth="3"
+            strokeLinecap="round"
+            transform="rotate(-90 80 80)"
+          />
+        </svg>
+
+        <div id="bb-loader-logo">
+          <svg viewBox="0 0 60 36" width="60" height="36" xmlns="http://www.w3.org/2000/svg">
+            <text
+              x="30" y="28"
+              textAnchor="middle"
+              fontFamily="Georgia, serif"
+              fontSize="30"
+              fontWeight="900"
+              fill="#FACC15"
+            >
+              BB
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <div id="bb-loader-tagline">
+        <span className="tag-1">BeyondBell</span>
+        <span className="tag-2">Circle · Opening July 2026</span>
+      </div>
+
+      <div id="bb-loader-dots">
+        <span /><span /><span />
+      </div>
+    </div>
+  )
+}
+
 export default function Page() {
   const [count, setCount] = useState<number | null>(null)
   const [displayCount, setDisplayCount] = useState(0)
@@ -249,7 +325,6 @@ export default function Page() {
       .catch(() => setCount(0))
   }, [])
 
-  // Count-up animation for FM counter — pops once on settle
   useEffect(() => {
     if (count === null) return
     const target = count
@@ -272,7 +347,6 @@ export default function Page() {
     return () => cancelAnimationFrame(raf)
   }, [count])
 
-  // IntersectionObserver reveals
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) =>
@@ -288,7 +362,6 @@ export default function Page() {
     return () => io.disconnect()
   }, [])
 
-  // Sticky CTA visibility + scroll progress bar + aurora parallax
   useEffect(() => {
     const onScroll = () => {
       const heroBottom = heroRef.current?.getBoundingClientRect().bottom ?? 0
@@ -309,7 +382,6 @@ export default function Page() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Pointer-tracked highlight: tool cards, tier cards, primary buttons
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) return
@@ -339,6 +411,7 @@ export default function Page() {
 
   return (
     <main className="bg-white text-navy font-nunito overflow-x-hidden">
+      <PageLoader />
       <div className="scroll-progress" />
 
       {/* ─────────────── SECTION 1 — HERO ─────────────── */}
@@ -353,11 +426,41 @@ export default function Page() {
           <div className="dot-grid" />
         </div>
 
+        {/* Floating ambient SVG shapes */}
+        <svg className="ambient-shape float-a" style={{ top: '12%', left: '8%' }} width="60" height="60" viewBox="0 0 60 60" aria-hidden>
+          <polygon points="30,4 56,30 30,56 4,30" fill="none" stroke="#FACC15" strokeWidth="1.6" opacity="0.55" />
+        </svg>
+        <svg className="ambient-shape float-b" style={{ top: '18%', right: '10%' }} width="110" height="110" viewBox="0 0 110 110" aria-hidden>
+          <circle cx="55" cy="55" r="52" fill="none" stroke="#FACC15" strokeWidth="1.4" opacity="0.4" />
+          <circle cx="55" cy="55" r="34" fill="none" stroke="#FACC15" strokeWidth="0.8" opacity="0.3" />
+        </svg>
+        <svg className="ambient-shape float-c" style={{ bottom: '22%', left: '12%' }} width="44" height="44" viewBox="0 0 44 44" aria-hidden>
+          <g fill="#FACC15" opacity="0.55">
+            <circle cx="6" cy="6" r="2.5" />
+            <circle cx="22" cy="6" r="2.5" opacity="0.4" />
+            <circle cx="38" cy="6" r="2.5" opacity="0.4" />
+            <circle cx="6" cy="22" r="2.5" opacity="0.4" />
+            <circle cx="22" cy="22" r="3" />
+            <circle cx="38" cy="22" r="2.5" opacity="0.4" />
+            <circle cx="6" cy="38" r="2.5" opacity="0.4" />
+            <circle cx="22" cy="38" r="2.5" opacity="0.4" />
+            <circle cx="38" cy="38" r="2.5" opacity="0.4" />
+          </g>
+        </svg>
+        <svg className="ambient-shape float-d" style={{ bottom: '14%', right: '14%' }} width="32" height="32" viewBox="0 0 32 32" aria-hidden>
+          <line x1="16" y1="2" x2="16" y2="30" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" opacity="0.65" />
+          <line x1="2" y1="16" x2="30" y2="16" stroke="#FACC15" strokeWidth="2" strokeLinecap="round" opacity="0.65" />
+        </svg>
+        <svg className="ambient-shape float-e" style={{ top: '46%', right: '6%' }} width="80" height="14" viewBox="0 0 80 14" aria-hidden>
+          <line x1="0" y1="7" x2="80" y2="7" stroke="#0A0A0A" strokeWidth="1.2" opacity="0.18" />
+          <line x1="14" y1="2" x2="64" y2="2" stroke="#FACC15" strokeWidth="1.2" opacity="0.5" />
+        </svg>
+
         <div className="relative z-10 max-w-3xl mx-auto w-full">
           {/* logo lockup */}
           <div className="flex items-center justify-center gap-2.5 mb-10 animate-fade-up">
-            <div className="w-10 h-10 rounded-xl bg-navy-fade flex items-center justify-center shadow-soft">
-              <span className="text-white font-black text-sm tracking-tight">BB</span>
+            <div className="w-10 h-10 rounded-xl bg-navy flex items-center justify-center shadow-soft">
+              <span className="text-amber font-black text-sm tracking-tight">BB</span>
             </div>
             <span className="font-black text-navy text-lg tracking-tight">
               BeyondBell<span className="text-amber animate-blink">.</span>
@@ -366,62 +469,51 @@ export default function Page() {
 
           {/* tiny pill */}
           <div
-            className="inline-flex items-center gap-2 mb-6 px-3.5 py-1.5 rounded-full bg-amber-light border border-amber/30 text-[12px] font-bold text-navy animate-fade-up"
+            className="inline-flex items-center gap-2 mb-6 px-3.5 py-1.5 rounded-full bg-amber border border-amber-deep/40 text-[12px] font-black text-navy animate-fade-up"
             style={{ animationDelay: '0.05s' }}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber" />
-            Opening July 2026 · Reserve before Founding Member spots close
+            <Sparkles className="w-3.5 h-3.5 text-navy" />
+            Opening July 2026 · Founding spots closing
           </div>
 
           {/* headline (typewriter) */}
           <HeadlineTypewriter />
 
           <p
-            className="text-[17px] md:text-xl text-muted leading-relaxed max-w-2xl mx-auto mb-3 animate-fade-up-soft"
+            className="text-[17px] md:text-xl text-muted leading-relaxed max-w-2xl mx-auto mb-10 animate-fade-up-soft"
             style={{ animationDelay: '1.8s' }}
           >
-            Not a WhatsApp group. Not a generic AI tool. Something that actually
-            understands your board, your classroom, and your week.
-          </p>
-          <p
-            className="text-[15px] md:text-[17px] text-muted leading-relaxed max-w-2xl mx-auto mb-10 animate-fade-up-soft"
-            style={{ animationDelay: '2.0s' }}
-          >
-            BeyondBell Circle is an AI-powered professional community for educators
-            and school leaders across CBSE, ICSE, and IGCSE schools. Six tools built
-            for real classrooms. A community built for real thinking.
+            AI tools and a real community for CBSE, ICSE, and IGCSE schools.
           </p>
 
           <div
-            className="animate-fade-up-soft"
-            style={{ animationDelay: '2.2s' }}
+            className="animate-fade-up-soft relative inline-block"
+            style={{ animationDelay: '2.0s' }}
           >
             <button
               onClick={scrollToForm}
               className="btn-primary text-[15px] md:text-base"
             >
+              <span className="cta-glow" aria-hidden />
               Reserve My Spot
               <ArrowRight className="w-5 h-5" />
+              <span className="cta-ring" aria-hidden />
             </button>
             <p className="mt-3 text-sm text-muted">
-              Free to join the waitlist. Founding Member pricing when we launch.
+              Free to join. Founding pricing locked at launch.
             </p>
           </div>
 
           {/* FM urgency block */}
           <div
-            className="mt-12 bg-amber-light/80 backdrop-blur border border-amber/30 rounded-2xl px-6 py-6 text-left shadow-soft animate-fade-up-soft"
-            style={{ animationDelay: '2.4s' }}
+            className="mt-12 bg-amber-light/90 backdrop-blur border-2 border-amber/60 rounded-2xl px-6 py-6 text-left shadow-glow animate-fade-up-soft"
+            style={{ animationDelay: '2.2s' }}
           >
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
               <div className="flex-1 min-w-0">
                 <p className="font-black text-navy text-[17px] md:text-lg leading-snug">
-                  500 Founding Member spots.{' '}
-                  <span className="text-amber">₹199/month.</span> Locked for life.
-                </p>
-                <p className="text-[13px] md:text-sm text-muted mt-1">
-                  Once 500 is reached, this pricing is gone permanently. After that,
-                  Standard is ₹299/month.
+                  500 Founding spots ·{' '}
+                  <span className="underline-amber">₹199/month, locked for life.</span>
                 </p>
               </div>
               {count !== null && (
@@ -433,9 +525,9 @@ export default function Page() {
                     <span className="text-muted text-base font-bold"> / 500</span>
                   </div>
                   {remaining !== null && remaining > 0 && (
-                    <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-amber font-black mt-1">
+                    <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest text-amber-deep font-black mt-1">
                       <span className="live-dot" aria-hidden />
-                      {remaining} spots left
+                      {remaining} left
                     </div>
                   )}
                 </div>
@@ -445,20 +537,12 @@ export default function Page() {
             <div className="progress-track">
               <div className="progress-fill" style={{ width: `${fmPct}%` }} />
             </div>
-
-            <div className="flex justify-between mt-2">
-              <span className="text-[11px] text-muted">0</span>
-              <span className="text-[11px] font-black text-navy tracking-wide">
-                500 — then gone permanently
-              </span>
-            </div>
           </div>
 
           {showSocialProof && (
             <p className="mt-5 inline-flex items-center gap-2 text-sm text-muted animate-fade-in">
               <span className="live-dot" aria-hidden />
-              Join <strong className="text-navy">{count} educators</strong> from
-              CBSE, ICSE, and IGCSE schools already on the waitlist.
+              <strong className="text-navy">{count} educators</strong> already reserved.
             </p>
           )}
         </div>
@@ -469,7 +553,7 @@ export default function Page() {
             {[...BOARDS_LOOP, ...BOARDS_LOOP, ...BOARDS_LOOP].map((b, i) => (
               <span key={i} className="flex items-center gap-12">
                 {b}
-                <span className="text-amber/60">◆</span>
+                <span className="text-amber">◆</span>
               </span>
             ))}
           </div>
@@ -477,83 +561,37 @@ export default function Page() {
       </section>
 
       {/* ─────────────── SECTION 2 — PROBLEM ─────────────── */}
-      <section className="py-20 md:py-28 px-5 bg-white">
+      <section className="py-20 md:py-24 px-5 bg-white">
         <div className="max-w-2xl mx-auto reveal">
-          <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-6">
+          <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-6">
             Why This Exists
           </p>
-          <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-8">
-            There is no shortage of effort in Indian schools.
+          <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-6">
+            The problem isn&apos;t effort. It&apos;s <span className="underline-amber">isolation</span>.
           </h2>
-          <div className="space-y-4 text-[17px] text-muted leading-relaxed">
-            <p>Teachers are working harder than ever.</p>
-            <p>Leaders are managing more than they were trained for.</p>
-            <p>
-              Schools are navigating change — boards, AI, parent expectations, NEP —
-              with no real support structure.
-            </p>
-            <p className="font-black text-navy text-[20px] md:text-[22px] pt-2">
-              The problem is not effort. The problem is{' '}
-              <span className="underline-amber">isolation</span>.
-            </p>
-            <p>
-              Every school leader I know is solving the same problems — alone. There
-              is no shared thinking. No trusted peer group. No space to reflect
-              before deciding.
-            </p>
-            <p className="font-bold text-navy">
-              That is what BeyondBell Circle is built to change.
-            </p>
-          </div>
+          <p className="text-[17px] text-muted leading-relaxed">
+            Every school leader is solving the same problems — alone. No shared thinking. No trusted peers. That&apos;s what BeyondBell Circle is built to change.
+          </p>
         </div>
       </section>
 
       {/* ─────────────── SECTION 3 — WHAT IT IS ─────────────── */}
-      <section className="py-20 md:py-28 px-5 bg-[#F9FAFB] relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-60" />
+      <section className="py-20 md:py-24 px-5 bg-amber-light relative overflow-hidden">
+        <div className="absolute inset-0 dot-grid opacity-50" />
         <div className="relative max-w-5xl mx-auto">
-          <div className="reveal mb-14">
-            <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-4">
-              What It Is
+          <div className="reveal mb-10 text-center">
+            <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-4 justify-center">
+              The AI Studio
             </p>
-            <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-5">
-              BeyondBell Circle is a professional community for educators.
+            <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-3">
+              Five tools. <span className="underline-amber">Built for real classrooms.</span>
             </h2>
-            <div className="flex flex-wrap gap-2.5 mb-5">
-              {['Not a WhatsApp group.', 'Not a course platform.', 'Not a content dump.'].map(
-                (t, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-border text-muted text-sm font-bold"
-                  >
-                    {t}
-                  </span>
-                )
-              )}
-            </div>
-            <p className="font-bold text-navy text-lg md:text-xl max-w-3xl leading-snug">
-              A structured, high-trust space where school leaders and educators
-              think together — with real tools, real frameworks, and real peers.
+            <p className="text-muted text-[15px] md:text-base">
+              Try every tool once for free. Upgrade for unlimited.
             </p>
           </div>
 
-          <div className="reveal mb-6">
-            <div className="flex items-baseline justify-between flex-wrap gap-3">
-              <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em]">
-                The AI Studio — Six Tools
-              </p>
-              <span className="text-xs font-bold text-muted">
-                Try every tool once for free.
-              </span>
-            </div>
-            <p className="text-muted text-[15px] mt-3 mb-7 max-w-2xl">
-              Free members get one trial use of every tool. After the trial, each
-              tool shows a lock icon with the upgrade prompt. Paying members get
-              unlimited access.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
             {TOOLS.map((t, i) => {
               const Icon = t.icon
               return (
@@ -564,26 +602,23 @@ export default function Page() {
                 >
                   <div className="flex items-start justify-between mb-3 gap-3">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="tool-icon w-10 h-10 rounded-xl bg-amber/10 flex items-center justify-center flex-shrink-0">
-                        <Icon style={{ width: 19, height: 19, color: '#D4A017' }} />
+                      <div className="tool-icon w-11 h-11 rounded-xl bg-amber/30 flex items-center justify-center flex-shrink-0">
+                        <Icon style={{ width: 20, height: 20, color: '#0A0A0A' }} />
                       </div>
                       <h3 className="font-black text-navy text-[16px] md:text-[17px] truncate">
                         {t.name}
                       </h3>
                     </div>
                     {t.proOnly ? (
-                      <span className="inline-flex items-center gap-1 bg-navy/[0.07] text-navy text-[11px] font-black px-2 py-1 rounded-full flex-shrink-0 uppercase tracking-wide">
-                        <Lock style={{ width: 11, height: 11 }} /> Pro
+                      <span className="inline-flex items-center gap-1 bg-navy text-amber text-[10px] font-black px-2 py-1 rounded-full flex-shrink-0 uppercase tracking-wide">
+                        <Lock style={{ width: 10, height: 10 }} /> Pro
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 bg-amber/12 text-amber-deep text-[11px] font-black px-2 py-1 rounded-full flex-shrink-0 uppercase tracking-wide">
+                      <span className="inline-flex items-center gap-1 bg-amber text-navy text-[10px] font-black px-2 py-1 rounded-full flex-shrink-0 uppercase tracking-wide">
                         Try Free
                       </span>
                     )}
                   </div>
-                  <p className="text-xs font-black text-amber mb-2 tracking-wide">
-                    {t.access}
-                  </p>
                   <p className="text-[14px] text-muted leading-relaxed">{t.desc}</p>
                   <div className="tool-arrow mt-3 inline-flex items-center gap-1.5 text-navy text-xs font-black uppercase tracking-wider">
                     Reserve to unlock <ArrowRight style={{ width: 13, height: 13 }} />
@@ -593,37 +628,31 @@ export default function Page() {
             })}
           </div>
 
-          <div className="reveal bg-white rounded-2xl border border-border shadow-soft p-7 md:p-8">
-            <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-5">
+          <div className="reveal bg-white rounded-2xl border-2 border-amber/40 shadow-soft p-7 md:p-8">
+            <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-5">
               The Community
             </p>
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
               {[
-                '19 structured groups — by board, subject, and role',
-                'A Morning Briefing every weekday at 6:30am',
-                'A resource library tagged by board, grade, and subject',
-                'Monthly workshops and cohort programmes',
+                '19 structured groups by board, subject, role',
+                'Morning Briefing every weekday at 6:30am',
+                'Resource library tagged by board & grade',
+                'Monthly workshops & cohort programmes',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-amber font-black mt-0.5">→</span>
+                  <span className="text-amber-deep font-black mt-0.5">→</span>
                   <span className="text-navy text-[15px]">{item}</span>
                 </div>
               ))}
-            </div>
-            <div className="flex items-start gap-3 pt-4 mt-4 border-t border-border">
-              <span className="text-amber font-black mt-0.5">→</span>
-              <span className="text-muted italic text-[15px]">
-                No noise. No forwarded articles. No motivational quotes.
-              </span>
             </div>
           </div>
         </div>
       </section>
 
       {/* ─────────────── SECTION 4 — WHO IT IS FOR ─────────────── */}
-      <section className="py-20 md:py-28 px-5 bg-white">
+      <section className="py-20 md:py-24 px-5 bg-white">
         <div className="max-w-2xl mx-auto reveal">
-          <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-6">
+          <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-6">
             Who It Is For
           </p>
           <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-8">
@@ -631,61 +660,54 @@ export default function Page() {
           </h2>
           <div className="space-y-3.5">
             {[
-              'Principals and school leaders navigating academic and institutional change',
-              'Academic coordinators building systems with limited support',
-              'Teachers who want to grow professionally — without the noise',
-              'Counsellors and mentors working at the edges of student wellbeing',
+              'Principals and school leaders',
+              'Academic coordinators',
+              'Teachers who want to grow',
+              'Counsellors and mentors',
             ].map((item, i) => (
               <div
                 key={i}
-                className="reveal flex items-start gap-4 group"
+                className="reveal flex items-center gap-4 group"
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 <div
-                  className="check-pop w-7 h-7 rounded-full bg-amber/15 flex items-center justify-center flex-shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-110 group-hover:bg-amber/30"
+                  className="check-pop w-8 h-8 rounded-full bg-amber flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-soft"
                   style={{ '--cp-delay': `${i * 0.08 + 0.1}s` } as React.CSSProperties}
                 >
-                  <Check style={{ width: 14, height: 14, color: '#D4A017' }} />
+                  <Check style={{ width: 16, height: 16, color: '#0A0A0A', strokeWidth: 3 }} />
                 </div>
-                <span className="text-navy text-[16px] md:text-[17px] leading-relaxed">
+                <span className="text-navy text-[16px] md:text-[17px] leading-relaxed font-bold">
                   {item}
                 </span>
               </div>
             ))}
           </div>
-          <p className="mt-9 italic text-muted text-[16px]">
-            If you run a school, coordinate a department, or teach in a classroom —{' '}
-            <strong className="text-navy not-italic">this is built for you.</strong>
-          </p>
         </div>
       </section>
 
       {/* ─────────────── SECTION 5 — PRICING ─────────────── */}
-      <section className="py-20 md:py-28 px-5 bg-[#F9FAFB]">
+      <section className="py-20 md:py-24 px-5 bg-amber-light">
         <div className="max-w-4xl mx-auto">
-          <div className="reveal mb-14 text-center">
-            <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-4">
+          <div className="reveal mb-12 text-center">
+            <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-4 justify-center">
               Pricing
             </p>
             <h2 className="font-black text-[28px] md:text-[40px] text-navy leading-[1.15] tracking-tight mb-3">
-              Simple pricing. Built for working educators.
+              Start free. <span className="underline-amber">Upgrade when ready.</span>
             </h2>
-            <p className="text-muted text-[16px] md:text-[17px]">
-              Start free. Trial every tool once. Upgrade when you are ready.
-            </p>
           </div>
 
           <div className="space-y-5">
             {TIERS.map((tier, i) => (
               <div
                 key={i}
-                className={`tier-card reveal rounded-2xl p-6 md:p-7 border bg-white border-border ${
+                className={`tier-card reveal rounded-2xl p-6 md:p-7 border-2 bg-white border-border ${
                   tier.highlight ? 'fm' : ''
                 }`}
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 {tier.badge && (
-                  <span className="absolute -top-3 left-6 bg-navy text-white text-[10px] md:text-[11px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lift">
+                  <span className="absolute -top-3 left-6 bg-navy text-amber text-[10px] md:text-[11px] font-black px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lift">
                     {tier.badge}
                   </span>
                 )}
@@ -722,7 +744,7 @@ export default function Page() {
                     onClick={scrollToForm}
                     className={`flex-shrink-0 font-black text-sm px-5 py-3 rounded-xl transition-all self-start md:self-center ${
                       tier.highlight
-                        ? 'bg-navy text-white hover:bg-ink shadow-soft hover:-translate-y-0.5 hover:shadow-lift'
+                        ? 'bg-navy text-amber hover:bg-ink shadow-soft hover:-translate-y-0.5 hover:shadow-lift'
                         : 'btn-ghost'
                     }`}
                   >
@@ -736,47 +758,35 @@ export default function Page() {
       </section>
 
       {/* ─────────────── SECTION 6 — FOUNDER NOTE ─────────────── */}
-      <section className="py-20 md:py-28 px-5 bg-amber-warm relative overflow-hidden">
+      <section className="py-20 md:py-24 px-5 bg-navy relative overflow-hidden">
         <Quote
-          className="absolute -top-2 left-4 md:left-12 text-amber/15"
+          className="absolute -top-2 left-4 md:left-12 text-amber/20"
           style={{ width: 120, height: 120 }}
           aria-hidden
         />
         <div className="max-w-2xl mx-auto reveal relative">
           <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-8">
-            A note from the founder.
+            From the founder.
           </p>
 
-          <div className="space-y-5 text-[16px] md:text-[18px] text-navy leading-relaxed">
-            <p>I have spent years running schools. Not advising them — running them.</p>
+          <div className="space-y-5 text-[16px] md:text-[18px] text-white/90 leading-relaxed">
+            <p>I have spent years running schools — not advising them.</p>
             <p>
-              I know what it feels like to make decisions without a trusted peer to
-              think with. I know what a staffroom looks like at 4pm on a Friday
-              before results week. I know the gap between what a CBSE circular says
-              and what it means for a teacher on Monday morning.
-            </p>
-            <p>
-              BeyondBell Circle exists because that gap is too large — and too many
-              good educators are navigating it alone.
-            </p>
-            <p>
-              This is not a platform built in isolation from classrooms. Every
-              feature, every tool, every community decision comes from real school
-              experience.
+              Every feature, every tool, every community decision comes from real classroom experience. Because too many good educators are navigating it alone.
             </p>
           </div>
 
-          <p className="mt-10 font-black text-navy text-[20px] md:text-2xl italic underline-amber inline-block">
+          <p className="mt-10 font-black text-amber text-[20px] md:text-2xl italic inline-block">
             Slow down. Think better. Teach better.
           </p>
 
           <div className="mt-7 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-navy-fade flex items-center justify-center shadow-soft">
-              <span className="text-white font-black text-sm">TK</span>
+            <div className="w-12 h-12 rounded-full bg-amber flex items-center justify-center shadow-soft">
+              <span className="text-navy font-black text-sm">TK</span>
             </div>
             <div>
-              <p className="font-black text-navy">Thomas Koshy</p>
-              <p className="text-muted text-sm">Founder, BeyondBell</p>
+              <p className="font-black text-white">Thomas Koshy</p>
+              <p className="text-white/60 text-sm">Founder, BeyondBell</p>
             </div>
           </div>
         </div>
@@ -785,31 +795,28 @@ export default function Page() {
       {/* ─────────────── SECTION 7 — WAITLIST FORM ─────────────── */}
       <section
         ref={formRef}
-        className="py-20 md:py-28 px-5 bg-white relative"
+        className="py-20 md:py-24 px-5 bg-white relative"
         id="waitlist"
       >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber/40 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-amber to-transparent" />
         <div className="max-w-xl mx-auto reveal">
           <div className="text-center mb-10">
-            <p className="section-label text-sm font-black text-amber uppercase tracking-[0.22em] mb-4">
+            <p className="section-label text-sm font-black text-amber-deep uppercase tracking-[0.22em] mb-4 justify-center">
               Join the waitlist.
             </p>
             <h2 className="font-black text-[28px] md:text-[36px] text-navy leading-[1.15] tracking-tight mb-3">
-              BeyondBell Circle opens in July 2026.
+              Opens July 2026.
             </h2>
             <p className="text-muted text-[15px] md:text-[16px]">
-              <strong className="text-navy">
-                Founding Members get ₹199/month — locked for life.
-              </strong>{' '}
-              After 500, Standard is ₹299/month.
+              <strong className="text-navy">₹199/month locked for life</strong> for first 500.
             </p>
             {showSocialProof && (
-              <p className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-light border border-amber/30 text-[13px] text-navy font-bold">
+              <p className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber border border-amber-deep/40 text-[13px] text-navy font-black">
                 <span className="relative flex w-2 h-2">
-                  <span className="absolute inset-0 rounded-full bg-amber animate-pulse-glow" />
-                  <span className="relative w-2 h-2 rounded-full bg-amber" />
+                  <span className="absolute inset-0 rounded-full bg-navy animate-pulse-glow" />
+                  <span className="relative w-2 h-2 rounded-full bg-navy" />
                 </span>
-                Join {count} educators already on the waitlist
+                {count} educators already on the list
               </p>
             )}
           </div>
@@ -817,8 +824,7 @@ export default function Page() {
           <WaitlistForm onSuccess={() => setCount((c) => (c ?? 0) + 1)} />
 
           <p className="text-center text-[12px] text-muted/80 mt-8 leading-relaxed">
-            We&apos;ll send you one email — when BeyondBell Circle goes live in July
-            2026. Until then: complete silence.
+            One email. The day we go live in July 2026. Until then — silence.
           </p>
         </div>
       </section>
@@ -827,21 +833,21 @@ export default function Page() {
       <footer className="bg-navy py-12 px-5 text-center">
         <div className="max-w-xl mx-auto">
           <div className="flex items-center justify-center gap-2.5 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-              <span className="text-white font-black text-xs">BB</span>
+            <div className="w-8 h-8 rounded-lg bg-amber flex items-center justify-center">
+              <span className="text-navy font-black text-xs">BB</span>
             </div>
             <span className="text-white font-black text-sm tracking-tight">
               BeyondBell<span className="text-amber">.</span>
             </span>
           </div>
-          <p className="text-white/60 text-sm italic mb-3">
+          <p className="text-amber/90 text-sm italic mb-3">
             Slow down. Think better. Teach better.
           </p>
           <p className="text-white/40 text-xs">
             © 2026 BeyondBell Education OPC Private Limited &nbsp;·&nbsp;{' '}
             <a
               href="https://beyondbell.in"
-              className="hover:text-white transition-colors underline-offset-4 hover:underline"
+              className="hover:text-amber transition-colors underline-offset-4 hover:underline"
             >
               beyondbell.in
             </a>
@@ -855,7 +861,7 @@ export default function Page() {
       {/* ─────────────── STICKY MOBILE CTA ─────────────── */}
       <div className={`sticky-cta ${showSticky ? 'show' : ''}`}>
         <div className="min-w-0">
-          <div className="text-[12px] text-white/70 font-bold leading-tight">
+          <div className="text-[12px] text-amber font-black leading-tight">
             ₹199/month · Locked for life
           </div>
           {count !== null ? (
