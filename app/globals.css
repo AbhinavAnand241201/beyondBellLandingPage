@@ -10,8 +10,16 @@
   --muted: #525252;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Lenis smooth scroll takes over; disable native smooth-scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* Hide native cursor where the custom cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  body.has-bb-cursor, body.has-bb-cursor * { cursor: none !important; }
 }
 
 body {
@@ -203,6 +211,9 @@ body {
               box-shadow 0.35s ease,
               border-color 0.35s ease;
   overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
 }
 .tool-card::before {
   content: '';
@@ -869,6 +880,342 @@ body {
 @keyframes dot-pulse {
   0%, 100% { background: rgba(250,204,21,0.4); transform: scale(1); }
   50%      { background: #FACC15; transform: scale(1.4); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   VIDEO HOVER OVERLAY (ParentCommunicator card)
+   ═══════════════════════════════════════════════════════ */
+.tool-card .video-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #0A0A0A;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.45s cubic-bezier(0.22,1,0.36,1);
+  z-index: 4;
+}
+.tool-card .video-overlay video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* zoom + lift to crop the browser tab bar at the top of the recording */
+  transform: scale(1.22) translateY(-4%);
+  transform-origin: center center;
+}
+.tool-card .video-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, transparent 55%, rgba(10,10,10,0.85) 100%);
+  pointer-events: none;
+}
+.tool-card .video-caption {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #FACC15;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+.tool-card .video-caption .live-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FACC15;
+  box-shadow: 0 0 10px rgba(250,204,21,0.8);
+  animation: pulse-glow 1.6s ease-out infinite;
+}
+.tool-card.has-video:hover .video-overlay {
+  opacity: 1;
+}
+.tool-card.has-video:hover .tool-card-body {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+.tool-card .tool-card-body {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* ═══════════════════════════════════════════════════════
+   3D TILT — JS sets --rx, --ry; transform reads them
+   ═══════════════════════════════════════════════════════ */
+.tool-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --tz: 0;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(var(--tz));
+}
+.tool-card:hover {
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(8px) scale(1.01);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAGNETIC BUTTON — JS nudges --bx,--by; we apply transform
+   ═══════════════════════════════════════════════════════ */
+.btn-primary {
+  --bx: 0px;
+  --by: 0px;
+  transform: translate3d(var(--bx), var(--by), 0);
+}
+.btn-primary:hover {
+  transform: translate3d(var(--bx), var(--by), 0) translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SECTION NUMBER BADGES (01 / 02 / 03)
+   ═══════════════════════════════════════════════════════ */
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 900;
+  font-size: 13px;
+  color: #FACC15;
+  letter-spacing: 0.18em;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.6s ease 0.1s, transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s;
+}
+.section-num::after {
+  content: '';
+  width: 36px;
+  height: 1.5px;
+  background: linear-gradient(90deg, #FACC15, transparent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s;
+}
+.reveal.in .section-num {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal.in .section-num::after {
+  transform: scaleX(1);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HERO SCROLL CUE
+   ═══════════════════════════════════════════════════════ */
+.scroll-cue {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #525252;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: cue-fade-in 0.6s ease 2.6s forwards;
+  z-index: 5;
+}
+.scroll-cue .mouse {
+  width: 22px;
+  height: 36px;
+  border: 2px solid #0A0A0A;
+  border-radius: 12px;
+  position: relative;
+}
+.scroll-cue .mouse::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 3px;
+  height: 7px;
+  border-radius: 2px;
+  background: #FACC15;
+  transform: translateX(-50%);
+  animation: cue-bob 1.6s ease-in-out infinite;
+}
+@keyframes cue-fade-in {
+  to { opacity: 1; }
+}
+@keyframes cue-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50%      { transform: translateX(-50%) translateY(8px); opacity: 0.4; }
+}
+@media (max-width: 768px) {
+  .scroll-cue { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CURSOR SPOTLIGHT (hero)
+   ═══════════════════════════════════════════════════════ */
+.cursor-spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(220px 220px at var(--cx, 50%) var(--cy, 50%),
+    rgba(250,204,21,0.18), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.hero-wrap:hover .cursor-spot { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════
+   SVG SECTION DIVIDERS (drawing line + diamond)
+   ═══════════════════════════════════════════════════════ */
+.svg-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 8px 0;
+  margin: 0 auto;
+  max-width: 480px;
+}
+.svg-divider .line {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #FACC15, transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1.2s cubic-bezier(0.22,1,0.36,1) 0.2s;
+}
+.svg-divider svg {
+  flex-shrink: 0;
+  animation: divider-spin 14s linear infinite;
+}
+.reveal.in .svg-divider .line { transform: scaleX(1); }
+@keyframes divider-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SPARKLE ORBITS (around FM counter)
+   ═══════════════════════════════════════════════════════ */
+.sparkle-orbit {
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+}
+.sparkle-orbit .spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FACC15;
+  box-shadow: 0 0 8px rgba(250,204,21,0.9);
+  margin: -2px 0 0 -2px;
+  animation: spark-orbit 4s linear infinite;
+  opacity: 0.85;
+}
+.sparkle-orbit .spark:nth-child(1) { animation-delay: 0s; }
+.sparkle-orbit .spark:nth-child(2) { animation-delay: 1.3s; }
+.sparkle-orbit .spark:nth-child(3) { animation-delay: 2.6s; }
+@keyframes spark-orbit {
+  0%   { transform: rotate(0deg)   translateX(46px) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: rotate(360deg) translateX(46px) rotate(-360deg); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   GRADIENT TEXT SHIMMER
+   ═══════════════════════════════════════════════════════ */
+.gradient-text {
+  background: linear-gradient(120deg, #0A0A0A 0%, #CA8A04 35%, #FACC15 50%, #CA8A04 65%, #0A0A0A 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 6s ease-in-out infinite;
+}
+@keyframes text-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MORPHING CURSOR — dot follows pointer; expands into
+   a "Hover to play" pill over .has-video tool cards.
+   ═══════════════════════════════════════════════════════ */
+.bb-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #FACC15;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.8);
+  pointer-events: none;
+  z-index: 9000;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-radius 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.25s ease,
+              padding 0.35s ease,
+              opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: transparent;
+  font-family: var(--font-nunito), Nunito, sans-serif;
+  opacity: 0;
+}
+.bb-cursor.ready { opacity: 1; }
+.bb-cursor.hover-link {
+  width: 36px;
+  height: 36px;
+  background: rgba(250, 204, 21, 0.25);
+  border: 1.5px solid #FACC15;
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.7);
+}
+.bb-cursor.hover-video {
+  width: 152px;
+  height: 40px;
+  border-radius: 999px;
+  padding: 0 16px;
+  background: #FACC15;
+  color: #0A0A0A;
+  box-shadow: 0 12px 28px -8px rgba(250, 204, 21, 0.7);
+}
+@media (hover: none), (pointer: coarse) {
+  .bb-cursor { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   NOISE GRAIN OVERLAY (fixed, ~3% opacity)
+   ═══════════════════════════════════════════════════════ */
+.noise-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8000;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
 }
 
 /* ───────────────────────── reduced motion ───────────────────────── */
