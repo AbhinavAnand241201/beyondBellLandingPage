@@ -15,20 +15,20 @@ export default function ParentCommunicatorDemo() {
   const [open, setOpen] = useState(false)
 
   return (
-    <section className="py-20 md:py-24 px-5 bg-white relative overflow-hidden">
+    <section className="py-16 sm:py-20 md:py-24 px-5 bg-white relative overflow-hidden">
       {/* decorative orange shapes */}
       <div
-        className="absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-30"
+        className="absolute -top-24 -right-24 w-72 sm:w-96 h-72 sm:h-96 rounded-full opacity-30"
         style={{ background: 'radial-gradient(circle, #FFDBA6 0%, transparent 70%)' }}
         aria-hidden
       />
       <div
-        className="absolute -bottom-32 -left-32 w-[480px] h-[480px] rounded-full opacity-25"
+        className="absolute -bottom-32 -left-32 w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full opacity-25"
         style={{ background: 'radial-gradient(circle, #FF8A00 0%, transparent 65%)' }}
         aria-hidden
       />
 
-      <div className="relative max-w-[1200px] mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
+      <div className="relative max-w-[1200px] mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-16 items-center">
         {/* LEFT — copy + bullets + cta */}
         <motion.div
           initial={{ opacity: 0, x: -32 }}
@@ -36,11 +36,11 @@ export default function ParentCommunicatorDemo() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-orange-pale border border-orange-light text-[11px] font-bold text-orange-deep uppercase tracking-[0.18em] mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-orange-pale border border-orange-light text-[10px] sm:text-[11px] font-bold text-orange-deep uppercase tracking-[0.18em] mb-4 sm:mb-5">
             <MessageCircle size={12} /> Featured Tool
           </div>
 
-          <h2 className="font-sora font-bold text-[28px] md:text-[40px] leading-[1.1] text-brown-dark mb-5 tracking-tight">
+          <h2 className="font-sora font-bold text-[26px] sm:text-[32px] md:text-[40px] leading-[1.05] text-brown-dark mb-4 sm:mb-5 tracking-tight">
             Parent<span className="text-orange-main">Communicator.</span>
           </h2>
 
@@ -68,7 +68,10 @@ export default function ParentCommunicatorDemo() {
             ))}
           </ul>
 
-          <button onClick={() => setOpen(true)} className="btn-primary text-[14px] tracking-wider uppercase">
+          <button
+            onClick={() => setOpen(true)}
+            className="btn-primary text-[13px] sm:text-[14px] tracking-wider uppercase w-full sm:w-auto"
+          >
             <Play size={14} fill="#fff" />
             Video Demo
           </button>
@@ -106,15 +109,16 @@ export default function ParentCommunicatorDemo() {
           </div>
 
           {/* Center play button */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-            <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full bg-orange-main flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-glow">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-orange-main flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-glow">
               <span className="absolute inset-0 rounded-full bg-orange-main animate-ping opacity-25" />
-              <Play size={36} fill="#fff" className="ml-1.5" />
+              <Play size={28} fill="#fff" className="ml-1.5 sm:hidden" />
+              <Play size={36} fill="#fff" className="ml-1.5 hidden sm:block" />
             </div>
-            <p className="mt-6 font-sora font-bold text-lg md:text-xl tracking-tight">
+            <p className="mt-4 sm:mt-6 font-sora font-bold text-base sm:text-lg md:text-xl tracking-tight text-center">
               Watch ParentCommunicator
             </p>
-            <p className="mt-1 text-[12px] text-white/65 uppercase tracking-[0.2em]">
+            <p className="mt-1 text-[10px] sm:text-[12px] text-white/65 uppercase tracking-[0.2em] text-center">
               Click to play · 60-second demo
             </p>
           </div>

@@ -53,7 +53,7 @@ export default function VideoModal({ open, src, title, onClose }: VideoModalProp
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-10 bg-black/92 backdrop-blur-sm"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 md:p-10 bg-black/92 backdrop-blur-sm"
           onClick={onClose}
           role="dialog"
           aria-modal="true"

@@ -13,8 +13,8 @@ const FEATURES = [
 
 export default function ProfessionalHome() {
   return (
-    <section className="py-20 md:py-24 px-5 bg-white" id="about">
-      <div className="max-w-[1200px] mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-12 lg:gap-16 items-center">
+    <section className="py-16 sm:py-20 md:py-24 px-5 bg-white" id="about">
+      <div className="max-w-[1200px] mx-auto grid lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-16 items-center">
         {/* LEFT */}
         <motion.div
           initial={{ opacity: 0, x: -32 }}
@@ -22,10 +22,10 @@ export default function ProfessionalHome() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-[12px] font-bold text-orange-main uppercase tracking-[0.22em] mb-4">
+          <p className="text-[11px] sm:text-[12px] font-bold text-orange-main uppercase tracking-[0.22em] mb-4">
             Why BeyondBell
           </p>
-          <h2 className="font-sora font-bold text-[28px] md:text-[40px] leading-[1.1] text-brown-dark mb-7 tracking-tight">
+          <h2 className="font-sora font-bold text-[26px] sm:text-[32px] md:text-[40px] leading-[1.1] text-brown-dark mb-6 sm:mb-7 tracking-tight">
             A professional home for{' '}
             <span className="text-orange-main">educators.</span>
           </h2>
@@ -57,6 +57,9 @@ export default function ProfessionalHome() {
           <div className="hidden lg:block">
             <BelloImage pose="reading" width={220} height={260} />
           </div>
+          <div className="lg:hidden flex justify-center mt-2">
+            <BelloImage pose="reading" width={180} height={210} />
+          </div>
         </motion.div>
 
         {/* RIGHT — dashboard mockup */}
@@ -69,38 +72,43 @@ export default function ProfessionalHome() {
         >
           <div className="rounded-2xl bg-white shadow-lift border border-brown-dark/8 overflow-hidden">
             {/* mac chrome */}
-            <div className="flex items-center gap-1.5 px-4 py-3 bg-orange-pale border-b border-brown-dark/5">
+            <div className="flex items-center gap-1.5 px-3 sm:px-4 py-2.5 sm:py-3 bg-orange-pale border-b border-brown-dark/5">
               <span className="win-dot bg-[#FF5F57]" />
               <span className="win-dot bg-[#FEBC2E]" />
               <span className="win-dot bg-[#28C840]" />
-              <span className="ml-3 text-[11px] text-muted font-mono">beyondbell.in / dashboard</span>
+              <span className="ml-2 sm:ml-3 text-[10px] sm:text-[11px] text-muted font-mono truncate">
+                beyondbell.in / dashboard
+              </span>
             </div>
 
             {/* dashboard svg mockup */}
-            <div className="p-5 bg-white">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-[11px] text-muted uppercase tracking-wider font-semibold">
+            <div className="p-4 sm:p-5 bg-white">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] sm:text-[11px] text-muted uppercase tracking-wider font-semibold">
                     Good morning, Priya
                   </p>
-                  <p className="font-sora font-bold text-lg text-brown-dark">
+                  <p className="font-sora font-bold text-base sm:text-lg text-brown-dark">
                     Your Morning Briefing
                   </p>
                 </div>
-                <Bell size={18} className="text-orange-main" />
+                <Bell size={18} className="text-orange-main shrink-0" />
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4">
                 {[
                   { label: 'Lessons planned', val: '12' },
                   { label: 'Peer threads', val: '34' },
                   { label: 'New resources', val: '8' },
                 ].map((m) => (
-                  <div key={m.label} className="rounded-xl bg-orange-pale border border-orange-light/60 p-3">
-                    <div className="font-sora font-extrabold text-2xl text-brown-dark leading-none">
+                  <div
+                    key={m.label}
+                    className="rounded-lg sm:rounded-xl bg-orange-pale border border-orange-light/60 p-2 sm:p-3"
+                  >
+                    <div className="font-sora font-extrabold text-xl sm:text-2xl text-brown-dark leading-none">
                       {m.val}
                     </div>
-                    <div className="text-[10px] text-muted mt-1 uppercase tracking-wider font-semibold">
+                    <div className="text-[9px] sm:text-[10px] text-muted mt-1 uppercase tracking-wider font-semibold leading-tight">
                       {m.label}
                     </div>
                   </div>

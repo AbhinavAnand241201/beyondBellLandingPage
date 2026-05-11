@@ -41,16 +41,16 @@ const card = {
 
 export default function FeaturesGrid() {
   return (
-    <section className="py-20 md:py-24 px-5 bg-white" id="how">
+    <section className="py-16 sm:py-20 md:py-24 px-5 bg-white" id="how">
       <div className="max-w-[1200px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.55 }}
-          className="text-center mb-14"
+          className="text-center mb-10 sm:mb-14"
         >
-          <h2 className="font-sora font-bold text-[28px] md:text-[40px] leading-[1.1] tracking-tight">
+          <h2 className="font-sora font-bold text-[26px] sm:text-[32px] md:text-[40px] leading-[1.1] tracking-tight">
             <span className="text-brown-dark">Everything educators need.</span>
             <br />
             <span className="text-orange-main">In one smarter circle.</span>

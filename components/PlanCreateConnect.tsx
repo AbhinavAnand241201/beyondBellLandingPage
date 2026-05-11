@@ -37,19 +37,19 @@ const card = {
 
 export default function PlanCreateConnect() {
   return (
-    <section className="py-20 md:py-24 px-5 bg-orange-pale relative overflow-hidden">
+    <section className="py-16 sm:py-20 md:py-24 px-5 bg-orange-pale relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="font-sora font-bold text-[28px] md:text-4xl text-center text-brown-dark mb-12 tracking-tight"
+          className="font-sora font-bold text-[26px] sm:text-[32px] md:text-4xl text-center text-brown-dark mb-10 sm:mb-12 tracking-tight"
         >
           Plan. <span className="text-orange-main">Create.</span> Connect.
         </motion.h2>
 
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -57,7 +57,12 @@ export default function PlanCreateConnect() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="flex-shrink-0 bello-bob"
           >
-            <BelloImage pose="relaxed" width={280} height={340} />
+            <div className="block sm:hidden">
+              <BelloImage pose="relaxed" width={200} height={245} />
+            </div>
+            <div className="hidden sm:block">
+              <BelloImage pose="relaxed" width={280} height={340} />
+            </div>
           </motion.div>
 
           <motion.div
