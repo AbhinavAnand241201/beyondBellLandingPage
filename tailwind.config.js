@@ -7,28 +7,36 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        nunito: ['var(--font-nunito)', 'Nunito', 'sans-serif'],
+        sora: ['var(--font-sora)', 'Sora', 'sans-serif'],
+        inter: ['var(--font-inter)', 'Inter', 'sans-serif'],
       },
       colors: {
-        navy: '#0A0A0A',
-        'navy-soft': '#1F1F1F',
-        amber: '#FACC15',
-        'amber-deep': '#CA8A04',
-        'amber-light': '#FEFCE8',
-        'amber-warm': '#FEF9C3',
-        muted: '#525252',
-        border: '#E5E5E5',
-        ink: '#000000',
+        orange: {
+          main: '#FF8A00',
+          light: '#FFDBA6',
+          pale: '#FFF6EB',
+          deep: '#E07700',
+        },
+        brown: {
+          dark: '#2B1B0E',
+          mid: '#5A4633',
+        },
+        ink: '#111111',
+        muted: '#5A5A5A',
+      },
+      borderRadius: {
+        pill: '50px',
+        card: '20px',
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(0,0,0,0.04), 0 6px 18px rgba(0,0,0,0.06)',
-        lift: '0 20px 50px -12px rgba(0,0,0,0.18)',
-        glow: '0 0 0 6px rgba(250,204,21,0.18), 0 18px 40px -12px rgba(250,204,21,0.45)',
-        ring: '0 0 0 1px rgba(0,0,0,0.06)',
+        soft: '0 1px 2px rgba(43,27,14,0.04), 0 6px 18px rgba(43,27,14,0.06)',
+        card: '0 8px 24px -8px rgba(43,27,14,0.10), 0 2px 6px rgba(43,27,14,0.04)',
+        lift: '0 18px 44px -12px rgba(43,27,14,0.18)',
+        glow: '0 0 0 6px rgba(255,138,0,0.12), 0 16px 36px -10px rgba(255,138,0,0.45)',
       },
       backgroundImage: {
-        'amber-fade': 'linear-gradient(135deg,#FACC15 0%,#FDE047 100%)',
-        'navy-fade': 'linear-gradient(135deg,#0A0A0A 0%,#1F1F1F 100%)',
+        'orange-fade': 'linear-gradient(135deg,#FF8A00 0%,#FFB04D 100%)',
+        'pale-fade': 'linear-gradient(180deg,#FFF6EB 0%,#FFFFFF 100%)',
       },
     },
   },

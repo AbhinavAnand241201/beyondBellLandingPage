@@ -1,19 +1,16 @@
 'use client'
 
 import { useState, type FormEvent, type ChangeEvent } from 'react'
-import { ArrowRight, CheckCircle2, ChevronDown, Loader2, Mail } from 'lucide-react'
+import { ArrowRight, CheckCircle2, ChevronDown, Loader2, Lock, Mail } from 'lucide-react'
 
 const ROLES = [
-  'Principal',
-  'Vice Principal',
-  'Coordinator',
   'Teacher',
-  'Counsellor',
+  'Department Head (HOD)',
+  'Principal',
+  'School Admin',
   'Other',
 ]
-
-
-const BOARDS = ['CBSE', 'ICSE', 'IGCSE', 'Other']
+const BOARDS = ['CBSE', 'ICSE', 'State Board', 'IB', 'IGCSE', 'Other']
 
 type Status = 'idle' | 'loading' | 'success' | 'already' | 'error'
 type FieldKey = 'full_name' | 'email' | 'role' | 'board'
@@ -106,27 +103,22 @@ export default function WaitlistForm({ onSuccess }: Props) {
 
   if (status === 'success') {
     return (
-      <div className="text-center py-10 animate-fade-in">
+      <div className="text-center py-6 animate-fade-in">
         <div className="relative w-20 h-20 mx-auto mb-6">
           <span className="burst absolute inset-0 rounded-full" />
-          <div className="relative w-20 h-20 rounded-full bg-amber/15 flex items-center justify-center">
-            <CheckCircle2 style={{ width: 38, height: 38, color: '#CA8A04' }} />
+          <div className="relative w-20 h-20 rounded-full bg-orange-pale flex items-center justify-center border border-orange-light">
+            <CheckCircle2 style={{ width: 38, height: 38, color: '#FF8A00' }} />
           </div>
         </div>
-        <h3 className="font-black text-2xl md:text-[28px] text-navy mb-3 tracking-tight">
+        <h3 className="font-sora font-bold text-2xl text-brown-dark mb-3 tracking-tight">
           You&apos;re on the list.
         </h3>
-        <p className="text-muted text-[16px] leading-relaxed max-w-md mx-auto">
+        <p className="text-muted text-[15px] leading-relaxed max-w-md mx-auto">
           We&apos;ll reach out before BeyondBell Circle opens.
-          <br />
-          Until then —{' '}
-          <em className="font-black text-navy not-italic">
-            Slow down. Think better.
-          </em>
         </p>
-        <div className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold text-amber-deep bg-amber-light border border-amber/30 rounded-full px-4 py-2">
+        <div className="mt-5 inline-flex items-center gap-2 text-[13px] font-semibold text-orange-deep bg-orange-pale border border-orange-light rounded-pill px-4 py-2">
           <Mail style={{ width: 14, height: 14 }} />
-          We&apos;ll email you the moment we go live in July 2026.
+          One email when we go live.
         </div>
       </div>
     )
@@ -134,16 +126,15 @@ export default function WaitlistForm({ onSuccess }: Props) {
 
   if (status === 'already') {
     return (
-      <div className="text-center py-10 animate-fade-in">
-        <div className="w-20 h-20 rounded-full bg-amber/15 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 style={{ width: 38, height: 38, color: '#CA8A04' }} />
+      <div className="text-center py-6 animate-fade-in">
+        <div className="w-20 h-20 rounded-full bg-orange-pale border border-orange-light flex items-center justify-center mx-auto mb-6">
+          <CheckCircle2 style={{ width: 38, height: 38, color: '#FF8A00' }} />
         </div>
-        <h3 className="font-black text-2xl text-navy mb-3 tracking-tight">
+        <h3 className="font-sora font-bold text-2xl text-brown-dark mb-3 tracking-tight">
           You&apos;re already on the list.
         </h3>
-        <p className="text-muted text-[16px]">
-          We have your details. We&apos;ll be in touch the day BeyondBell Circle
-          goes live.
+        <p className="text-muted text-[15px]">
+          We have your details. We&apos;ll be in touch when BeyondBell Circle opens.
         </p>
       </div>
     )
@@ -214,13 +205,13 @@ export default function WaitlistForm({ onSuccess }: Props) {
               </option>
             ))}
           </select>
-          <label htmlFor="board">School Board</label>
+          <label htmlFor="board">Board</label>
           <ChevronDown className="chev" style={{ width: 16, height: 16 }} />
         </div>
       </div>
 
       {status === 'error' && errMsg && (
-        <p className="text-red-600 text-sm font-bold bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 animate-fade-in">
+        <p className="text-red-600 text-sm font-semibold bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
           {errMsg}
         </p>
       )}
@@ -243,8 +234,9 @@ export default function WaitlistForm({ onSuccess }: Props) {
         )}
       </button>
 
-      <p className="text-center text-[12px] text-muted pt-1">
-        No spam. No noise. Just one email when BeyondBell Circle is live.
+      <p className="text-center text-[12px] text-muted pt-1 flex items-center justify-center gap-1.5">
+        <Lock size={11} className="text-orange-main" />
+        No spam. Just meaningful updates.
       </p>
     </form>
   )
