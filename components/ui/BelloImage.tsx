@@ -28,7 +28,7 @@ export default function BelloImage({
   return (
     <Image
       src={POSE_MAP[pose]}
-      alt={`Bello the BeyondBell mascot — ${pose} pose`}
+      alt={`BeyondBell mascot — ${pose} pose`}
       width={width}
       height={height}
       className={`object-contain drop-shadow-[0_18px_24px_rgba(43,27,14,0.18)] ${className}`}
