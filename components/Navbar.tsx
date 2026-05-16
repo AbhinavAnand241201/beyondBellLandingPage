@@ -11,37 +11,6 @@ const NAV_LINKS = [
   { label: 'Contact', href: '#contact' },
 ]
 
-// Logo source. When you drop a real PNG into /public/logo.PNG (any non-zero
-// file size), it will render automatically. Until then we render the inline
-// SVG bell mark so the layout never breaks.
-function LogoMark() {
-  const [showImage, setShowImage] = useState(true)
-  if (showImage) {
-    return (
-      <Image
-        src="/logo.PNG"
-        alt="BeyondBell logo"
-        width={36}
-        height={36}
-        className="w-9 h-9 object-contain rounded-xl"
-        onError={() => setShowImage(false)}
-        priority
-      />
-    )
-  }
-  return (
-    <div className="w-9 h-9 rounded-xl bg-orange-main flex items-center justify-center shadow-soft">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
-        <path
-          d="M12 3a5 5 0 0 0-5 5v4.5L5 16h14l-2-3.5V8a5 5 0 0 0-5-5z"
-          fill="#fff"
-        />
-        <circle cx="12" cy="19" r="1.6" fill="#fff" />
-      </svg>
-    </div>
-  )
-}
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -56,12 +25,16 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-6 h-16 md:h-[72px] flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2.5 group">
-          <LogoMark />
-          <span className="font-sora text-[17px] tracking-tight">
-            <span className="font-normal text-brown-dark">Beyond</span>
-            <span className="font-extrabold text-orange-main">Bell</span>
-          </span>
+        <a href="#top" className="flex items-center group" aria-label="BeyondBell home">
+          {/* Logo PNG already contains the wordmark — render alone, transparent bg blends into navbar */}
+          <Image
+            src="/logo.PNG"
+            alt="BeyondBell"
+            width={1727}
+            height={1019}
+            className="h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform group-hover:scale-[1.03]"
+            priority
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-7">
