@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { Star, Menu, X } from 'lucide-react'
 
 const NAV_LINKS = [
@@ -9,6 +10,37 @@ const NAV_LINKS = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'Contact', href: '#contact' },
 ]
+
+// Logo source. When you drop a real PNG into /public/logo.PNG (any non-zero
+// file size), it will render automatically. Until then we render the inline
+// SVG bell mark so the layout never breaks.
+function LogoMark() {
+  const [showImage, setShowImage] = useState(true)
+  if (showImage) {
+    return (
+      <Image
+        src="/logo.PNG"
+        alt="BeyondBell logo"
+        width={36}
+        height={36}
+        className="w-9 h-9 object-contain rounded-xl"
+        onError={() => setShowImage(false)}
+        priority
+      />
+    )
+  }
+  return (
+    <div className="w-9 h-9 rounded-xl bg-orange-main flex items-center justify-center shadow-soft">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
+        <path
+          d="M12 3a5 5 0 0 0-5 5v4.5L5 16h14l-2-3.5V8a5 5 0 0 0-5-5z"
+          fill="#fff"
+        />
+        <circle cx="12" cy="19" r="1.6" fill="#fff" />
+      </svg>
+    </div>
+  )
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -25,15 +57,7 @@ export default function Navbar() {
     <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="max-w-[1200px] mx-auto px-5 md:px-6 h-16 md:h-[72px] flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-orange-main flex items-center justify-center shadow-soft transition-transform group-hover:scale-105">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
-              <path
-                d="M12 3a5 5 0 0 0-5 5v4.5L5 16h14l-2-3.5V8a5 5 0 0 0-5-5z"
-                fill="#fff"
-              />
-              <circle cx="12" cy="19" r="1.6" fill="#fff" />
-            </svg>
-          </div>
+          <LogoMark />
           <span className="font-sora text-[17px] tracking-tight">
             <span className="font-normal text-brown-dark">Beyond</span>
             <span className="font-extrabold text-orange-main">Bell</span>

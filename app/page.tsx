@@ -90,7 +90,7 @@ export default function Page() {
   return (
     <main className="bg-white text-ink overflow-x-hidden">
       <Navbar />
-      <HeroSection onCtaClick={scrollToForm} />
+      <HeroSection onCtaClick={scrollToForm} count={count} />
       <PlanCreateConnect />
       <ProfessionalHome />
       <ParentCommunicatorDemo />
