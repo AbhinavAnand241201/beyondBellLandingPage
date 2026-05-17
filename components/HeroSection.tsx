@@ -100,16 +100,16 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
           </motion.div>
         </motion.div>
 
-        {/* ─── RIGHT COLUMN — mascot (smaller on mobile, no overlapping cards) ─── */}
+        {/* ─── RIGHT COLUMN — mascot + floating cards ─── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className="relative flex items-center justify-center lg:min-h-[540px]"
+          className="relative flex items-center justify-center min-h-[360px] sm:min-h-[440px] lg:min-h-[540px]"
         >
-          <div className="bello-bob">
+          <div className="bello-bob relative z-0">
             <div className="block sm:hidden">
-              <BelloImage pose="hero" width={220} height={275} priority />
+              <BelloImage pose="hero" width={200} height={250} priority />
             </div>
             <div className="hidden sm:block md:hidden">
               <BelloImage pose="hero" width={300} height={375} priority />
@@ -122,7 +122,30 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
             </div>
           </div>
 
-          {/* Floating cards — md+ only. They have nowhere to breathe on small screens. */}
+          {/*
+            MOBILE-ONLY (visible <md): just 2 compact cards, positioned at torso/
+            hip level so they hug the mascot's body — never over the head/megaphone.
+          */}
+          <div className="md:hidden absolute top-[32%] -left-1 scale-[0.72] origin-top-left z-10 pointer-events-none">
+            <FloatingCard
+              icon={<Calendar size={16} />}
+              label="Lesson Planner"
+              sublabel="AI · 60 sec"
+              className="!relative !inset-auto"
+              floatClass="float-card-a"
+            />
+          </div>
+          <div className="md:hidden absolute bottom-[20%] -right-1 scale-[0.72] origin-bottom-right z-10 pointer-events-none">
+            <FloatingCard
+              icon={<MessagesSquare size={16} />}
+              label="Peer Discussion"
+              sublabel="19 groups"
+              className="!relative !inset-auto"
+              floatClass="float-card-c"
+            />
+          </div>
+
+          {/* DESKTOP (md+): full set of 4 floating cards around the mascot */}
           <FloatingCard
             icon={<Calendar size={18} />}
             label="Lesson Planner"

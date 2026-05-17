@@ -7,6 +7,7 @@ import HeroSection from '@/components/HeroSection'
 import PlanCreateConnect from '@/components/PlanCreateConnect'
 import ProfessionalHome from '@/components/ProfessionalHome'
 import ParentCommunicatorDemo from '@/components/ParentCommunicatorDemo'
+import ToolsGrid from '@/components/ToolsGrid'
 import FoundingMember from '@/components/FoundingMember'
 import FeaturesGrid from '@/components/FeaturesGrid'
 import SignupSection from '@/components/SignupSection'
@@ -94,6 +95,7 @@ export default function Page() {
       <PlanCreateConnect />
       <ProfessionalHome />
       <ParentCommunicatorDemo />
+      <ToolsGrid />
       <FoundingMember
         count={count}
         displayCount={displayCount}
