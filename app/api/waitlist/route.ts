@@ -9,8 +9,10 @@ const supabase =
     ? createClient(supabaseUrl, serviceRoleKey)
     : null
 
-const ROLES = ['Principal', 'Vice Principal', 'Coordinator', 'Teacher', 'Counsellor', 'Other']
-const BOARDS = ['CBSE', 'ICSE', 'IGCSE', 'Other']
+const ROLES = ['Teacher', 'Department Head (HOD)', 'Principal', 'School Admin', 'Vice Principal', 'Coordinator', 'Counsellor', 'Other']
+const BOARDS = ['CBSE', 'ICSE', 'State Board', 'IB', 'IGCSE', 'Other']
+const PLANS = ['founding', 'free'] as const
+type Plan = (typeof PLANS)[number]
 
 export async function POST(req: NextRequest) {
   if (!supabase) {
@@ -20,6 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { full_name, email, role, board } = body
+    const plan: Plan = PLANS.includes(body.plan) ? body.plan : 'founding'
 
     if (!full_name?.trim()) return err('Full name is required.')
     if (!email?.trim()) return err('Email address is required.')
@@ -35,6 +38,7 @@ export async function POST(req: NextRequest) {
         email: normalizedEmail,
         role,
         board,
+        plan,
         notified: false,
       })
 
@@ -57,6 +61,7 @@ export async function POST(req: NextRequest) {
           properties: {
             role,
             board,
+            plan,
             timestamp: new Date().toISOString(),
             source: 'waitlist_page',
           },

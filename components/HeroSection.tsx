@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Play, Users, Sparkles, MessagesSquare, Library, Bot, Calendar } from 'lucide-react'
+import { ArrowRight, Play, Users, Sparkles, MessagesSquare, LayoutDashboard, FileCheck2, Wand2 } from 'lucide-react'
 import BelloImage from '@/components/ui/BelloImage'
 import FloatingCard from '@/components/ui/FloatingCard'
 
@@ -32,7 +32,7 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
 
   const stats = [
     liveStat,
-    { icon: <Sparkles size={14} />, number: '5', label: 'AI tools' },
+    { icon: <Sparkles size={14} />, number: '4', label: 'AI tools' },
     { icon: <MessagesSquare size={14} />, number: '19', label: 'peer groups' },
   ]
 
@@ -128,8 +128,8 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
           */}
           <div className="md:hidden absolute top-[32%] -left-1 scale-[0.72] origin-top-left z-10 pointer-events-none">
             <FloatingCard
-              icon={<Calendar size={16} />}
-              label="Lesson Planner"
+              icon={<Wand2 size={16} />}
+              label="Lesson Architect"
               sublabel="AI · 60 sec"
               className="!relative !inset-auto"
               floatClass="float-card-a"
@@ -138,8 +138,8 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
           <div className="md:hidden absolute bottom-[20%] -right-1 scale-[0.72] origin-bottom-right z-10 pointer-events-none">
             <FloatingCard
               icon={<MessagesSquare size={16} />}
-              label="Peer Discussion"
-              sublabel="19 groups"
+              label="ParentCommunicator"
+              sublabel="3-min draft"
               className="!relative !inset-auto"
               floatClass="float-card-c"
             />
@@ -147,30 +147,30 @@ export default function HeroSection({ onCtaClick, count }: HeroSectionProps) {
 
           {/* DESKTOP (md+): full set of 4 floating cards around the mascot */}
           <FloatingCard
-            icon={<Calendar size={18} />}
-            label="Lesson Planner"
+            icon={<Wand2 size={18} />}
+            label="Lesson Architect"
             sublabel="AI · 60 sec"
             className="hidden md:flex top-[6%] left-[-2%] lg:left-[-4%] scale-90 lg:scale-100 origin-top-left"
             floatClass="float-card-a"
           />
           <FloatingCard
-            icon={<Library size={18} />}
-            label="Resource Hub"
-            sublabel="Templates · Guides"
+            icon={<FileCheck2 size={18} />}
+            label="Assessment Builder"
+            sublabel="Papers · Answer keys"
             className="hidden md:flex top-[2%] right-[-2%] lg:right-[-2%] scale-90 lg:scale-100 origin-top-right"
             floatClass="float-card-b"
           />
           <FloatingCard
             icon={<MessagesSquare size={18} />}
-            label="Peer Discussion"
-            sublabel="19 active groups"
+            label="ParentCommunicator"
+            sublabel="20+ situations"
             className="hidden md:flex top-[48%] right-[-4%] lg:right-[-8%] scale-90 lg:scale-100"
             floatClass="float-card-c"
           />
           <FloatingCard
-            icon={<Bot size={18} />}
-            label="AI Quiz Generator"
-            sublabel="Board-aligned"
+            icon={<LayoutDashboard size={18} />}
+            label="Principal's Desk"
+            sublabel="Leadership tools"
             className="hidden md:flex bottom-[8%] left-[2%] lg:left-[-4%] scale-90 lg:scale-100"
             floatClass="float-card-d"
           />

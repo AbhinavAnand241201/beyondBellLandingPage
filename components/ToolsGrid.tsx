@@ -2,29 +2,28 @@
 
 import { useState, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { Play, BookOpen, ClipboardList, MessageCircle, Calendar, CalendarClock, Sparkles } from 'lucide-react'
+import { Play, Wand2, FileCheck2, MessageCircle, LayoutDashboard, Sparkles } from 'lucide-react'
 import VideoModal from '@/components/VideoModal'
 
 type Tool = {
   icon: ReactNode
   name: string
   desc: string
-  /** Real video path. When null, the modal shows a "coming soon" placeholder. */
-  videoSrc: string | null
+  videoSrc: string
 }
 
 const TOOLS: Tool[] = [
   {
-    icon: <BookOpen size={22} />,
-    name: 'Lesson Planner',
+    icon: <Wand2 size={22} />,
+    name: 'Lesson Architect',
     desc: 'Board-aligned lesson plans for CBSE, ICSE & IGCSE in 60 seconds.',
-    videoSrc: null,
+    videoSrc: '/lesson-architect.mp4',
   },
   {
-    icon: <ClipboardList size={22} />,
-    name: 'Question Paper Maker',
-    desc: 'Section-balanced paper with answer key in 15 minutes.',
-    videoSrc: null,
+    icon: <FileCheck2 size={22} />,
+    name: 'Assessment Builder',
+    desc: 'Section-balanced question papers, quizzes and rubrics with answer keys.',
+    videoSrc: '/assessment-builder.mp4',
   },
   {
     icon: <MessageCircle size={22} />,
@@ -33,16 +32,10 @@ const TOOLS: Tool[] = [
     videoSrc: '/parentCommunicator.mp4',
   },
   {
-    icon: <Calendar size={22} />,
-    name: 'Event Planner',
-    desc: 'PTM, annual day, sports day — full timeline + templates.',
-    videoSrc: null,
-  },
-  {
-    icon: <CalendarClock size={22} />,
-    name: 'Time Table Maker',
-    desc: 'Clash-free school timetables generated in minutes.',
-    videoSrc: null,
+    icon: <LayoutDashboard size={22} />,
+    name: "Principal's Desk",
+    desc: 'A leadership workspace for events, timetables, and school-wide decisions.',
+    videoSrc: '/principal-desk.mp4',
   },
 ]
 
@@ -64,7 +57,6 @@ export default function ToolsGrid() {
 
   return (
     <section className="py-16 sm:py-20 md:py-24 px-5 bg-white relative overflow-hidden">
-      {/* soft decorative blob */}
       <div
         className="absolute -top-32 right-0 w-72 h-72 rounded-full opacity-20 pointer-events-none"
         style={{ background: 'radial-gradient(circle, #FF8A00 0%, transparent 65%)' }}
@@ -83,7 +75,7 @@ export default function ToolsGrid() {
             <Sparkles size={12} /> The AI Studio
           </div>
           <h2 className="font-sora font-bold text-[26px] sm:text-[32px] md:text-[40px] leading-[1.1] tracking-tight">
-            <span className="text-brown-dark">Five tools.</span>{' '}
+            <span className="text-brown-dark">Four tools.</span>{' '}
             <span className="text-orange-main">Built for real classrooms.</span>
           </h2>
           <p className="mt-3 text-muted text-[14px] sm:text-[16px] max-w-xl mx-auto">
@@ -96,7 +88,7 @@ export default function ToolsGrid() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
         >
           {TOOLS.map((tool) => (
             <motion.div
@@ -127,9 +119,8 @@ export default function ToolsGrid() {
 
       <VideoModal
         open={active !== null}
-        src={active?.videoSrc ?? undefined}
+        src={active?.videoSrc}
         title={active ? `${active.name} · Live Demo` : undefined}
-        placeholder={active !== null && active.videoSrc === null}
         onClose={() => setActive(null)}
       />
     </section>
