@@ -11,7 +11,11 @@ const NAV_LINKS = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export default function Navbar() {
+interface NavbarProps {
+  onFoundingClick?: () => void
+}
+
+export default function Navbar({ onFoundingClick }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -47,9 +51,13 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <span className="bg-orange-main text-white text-[12px] font-semibold px-4 py-1.5 rounded-pill flex items-center gap-1.5 shadow-soft">
+          <button
+            type="button"
+            onClick={onFoundingClick}
+            className="bg-orange-main hover:bg-orange-deep text-white text-[12px] font-semibold px-4 py-1.5 rounded-pill flex items-center gap-1.5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift active:translate-y-0"
+          >
             <Star size={12} fill="#fff" /> Founding Member
-          </span>
+          </button>
         </nav>
 
         <button
@@ -74,9 +82,16 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
-            <span className="mt-2 bg-orange-main text-white text-[12px] font-semibold px-4 py-2 rounded-pill flex items-center gap-1.5 self-start">
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false)
+                onFoundingClick?.()
+              }}
+              className="mt-2 bg-orange-main hover:bg-orange-deep text-white text-[12px] font-semibold px-4 py-2 rounded-pill flex items-center gap-1.5 self-start shadow-soft transition-colors"
+            >
               <Star size={12} fill="#fff" /> Founding Member
-            </span>
+            </button>
           </div>
         </div>
       )}

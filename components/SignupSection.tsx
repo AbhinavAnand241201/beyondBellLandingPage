@@ -14,9 +14,10 @@ const BENEFITS = [
 interface SignupSectionProps {
   formRef: React.RefObject<HTMLDivElement | null>
   onSuccess: () => void
+  planIntent?: { plan: 'founding' | 'free' } | null
 }
 
-export default function SignupSection({ formRef, onSuccess }: SignupSectionProps) {
+export default function SignupSection({ formRef, onSuccess, planIntent }: SignupSectionProps) {
   return (
     <section
       ref={formRef}
@@ -75,7 +76,7 @@ export default function SignupSection({ formRef, onSuccess }: SignupSectionProps
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="bg-white rounded-card shadow-lift border border-brown-dark/8 p-5 sm:p-6 md:p-8"
         >
-          <WaitlistForm onSuccess={onSuccess} />
+          <WaitlistForm onSuccess={onSuccess} planIntent={planIntent} />
         </motion.div>
       </div>
     </section>

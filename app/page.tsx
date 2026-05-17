@@ -13,10 +13,15 @@ import FeaturesGrid from '@/components/FeaturesGrid'
 import SignupSection from '@/components/SignupSection'
 import Footer from '@/components/Footer'
 
+type Plan = 'founding' | 'free'
+type PlanIntent = { plan: Plan } | null
+
 export default function Page() {
   const [count, setCount] = useState<number | null>(null)
   const [displayCount, setDisplayCount] = useState(0)
   const [popKey, setPopKey] = useState(0)
+  // New-object reference each click → WaitlistForm useEffect re-fires every time.
+  const [planIntent, setPlanIntent] = useState<PlanIntent>(null)
   const formRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -50,6 +55,11 @@ export default function Page() {
 
   const scrollToForm = () =>
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  const selectFoundingAndScroll = () => {
+    setPlanIntent({ plan: 'founding' })
+    scrollToForm()
+  }
 
   // Pointer-tracked glow on feature cards
   useEffect(() => {
@@ -90,7 +100,7 @@ export default function Page() {
 
   return (
     <main className="bg-white text-ink overflow-x-hidden">
-      <Navbar />
+      <Navbar onFoundingClick={selectFoundingAndScroll} />
       <HeroSection onCtaClick={scrollToForm} count={count} />
       <PlanCreateConnect />
       <ProfessionalHome />
@@ -103,7 +113,7 @@ export default function Page() {
         onCtaClick={scrollToForm}
       />
       <FeaturesGrid />
-      <SignupSection formRef={formRef} onSuccess={handleWaitlistSuccess} />
+      <SignupSection formRef={formRef} onSuccess={handleWaitlistSuccess} planIntent={planIntent} />
       <Footer />
     </main>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent, type ChangeEvent } from 'react'
+import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react'
 import { ArrowRight, CheckCircle2, ChevronDown, Loader2, Lock, Mail, Sparkles, Star, Crown } from 'lucide-react'
 
 const ROLES = [
@@ -21,14 +21,22 @@ type FieldKey = 'full_name' | 'email' | 'role' | 'board'
 
 interface Props {
   onSuccess?: (plan: Plan) => void
+  /** A new object reference fires the effect — used by Navbar "Founding Member" click to force-select. */
+  planIntent?: { plan: Plan } | null
 }
 
-export default function WaitlistForm({ onSuccess }: Props) {
+export default function WaitlistForm({ onSuccess, planIntent }: Props) {
   const [status, setStatus] = useState<Status>('idle')
   const [errMsg, setErrMsg] = useState('')
   const [errFields, setErrFields] = useState<Set<FieldKey>>(new Set())
   const [shake, setShake] = useState(false)
   const [plan, setPlan] = useState<Plan>('founding')
+
+  // External plan selection (e.g. Navbar's "Founding Member" CTA).
+  // Reference equality on planIntent means every click re-syncs, even repeated ones.
+  useEffect(() => {
+    if (planIntent) setPlan(planIntent.plan)
+  }, [planIntent])
 
   const [form, setForm] = useState<Record<FieldKey, string>>({
     full_name: '',
