@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Twitter, Instagram, Linkedin, Youtube } from 'lucide-react'
 
 const NAV_LINKS = [
@@ -22,21 +23,13 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 pb-10 border-b border-white/10">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-orange-main flex items-center justify-center">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden>
-                  <path
-                    d="M12 3a5 5 0 0 0-5 5v4.5L5 16h14l-2-3.5V8a5 5 0 0 0-5-5z"
-                    fill="#fff"
-                  />
-                  <circle cx="12" cy="19" r="1.6" fill="#fff" />
-                </svg>
-              </div>
-              <span className="font-sora text-[17px] tracking-tight">
-                <span className="font-normal text-white/90">Beyond</span>
-                <span className="font-extrabold text-orange-main">Bell</span>
-              </span>
-            </div>
+            <Image
+              src="/logo-white.PNG"
+              alt="BeyondBell"
+              width={1727}
+              height={1019}
+              className="h-10 sm:h-11 w-auto object-contain mb-3"
+            />
             <p className="text-[14px] text-white/65 leading-relaxed">
               The professional circle for future-ready educators.
             </p>
